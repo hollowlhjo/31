@@ -1,25 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import ChatMessage from "./ChatMsg";
+import ChatInput from "./ChatInput";
 
-function App() {
+function Chat() {
+  const [messages, setMessages] = useState([]);
+  const [error, setError] = useState(null);
+
+  const handleSendMessage = (newMessage) => {
+    setMessages([...messages, newMessage]);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>Чат</h1>
+      <div>
+        {messages.map((message, index) => (
+          <ChatMessage
+            key={index}
+            username={message.username}
+            text={message.message}
+            file={message.image}
+            date={new Date().toLocaleString()}
+          />
+        ))}
+        {error && <div>Помилка: {error}</div>}
+      </div>
+      <ChatInput onSendMessage={handleSendMessage} />
     </div>
   );
 }
 
-export default App;
+export default Chat;
